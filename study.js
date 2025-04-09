@@ -1,11 +1,13 @@
 // Confirmation message for console in Chrome
 console.log("study.js loaded");
+import { GEMINI_API_KEY } from "./config.js";
 
 import {
     getDecks,
     getFlashcards,
     updateFlashcardLevel
   } from "./app.js";
+
   
   const deckSelect = document.getElementById("deckSelect");
   const flashcardEl = document.getElementById("flashcard");
@@ -27,6 +29,39 @@ import {
       deckSelect.appendChild(option);
     });
   }
+
+// AI Hint Function
+async function fetchAIHint(prompt) {
+  
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: `Give a hint to answer the question, WITHOUT TELLING THE ANSWER: "${prompt}"`
+          }]
+        }]
+      })
+    });
+  
+    const data = await response.json();
+  
+    if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+      return data.candidates[0].content.parts[0].text;
+    } else if (data?.error?.message) {
+      return `⚠️ Error: ${data.error.message}`;
+    } else {
+      return "❌ Could not generate a hint.";
+    }
+  }
+
+  
+  
+  
+
   
   deckSelect.onchange = async () => {
     const deckId = deckSelect.value;
@@ -102,16 +137,28 @@ import {
   });
   
   // Hint Modal
-  hintBtn.onclick = () => {
+  hintBtn.onclick = async () => {
     if (!flashcards.length) return;
     const current = flashcards[currentCardIndex];
-    document.getElementById("hintContent").textContent = `Hint for: ${current.front} (placeholder)`;
+  
     hintModal.classList.remove("hidden");
+    const hintTextEl = document.getElementById("hintContent");
+    hintTextEl.textContent = "Generating hint...";
+  
+    try {
+      const hint = await fetchAIHint(`Give a helpful study hint for: "${current.front}"`);
+      hintTextEl.textContent = hint;
+    } catch (error) {
+      hintTextEl.textContent = "Failed to fetch hint. Try again later.";
+      console.error("Hint error:", error);
+    }
   };
   
   closeHintModal.onclick = () => {
     hintModal.classList.add("hidden");
   };
   
+
+
   populateDecks();
   

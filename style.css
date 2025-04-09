@@ -172,6 +172,26 @@ body {
   .study-header {
     text-align: center;
   }
+
+  .back-button {
+    align-self: flex-start;
+    margin-bottom: -20px;
+  }
+  
+  .back-button button {
+    background-color: #fff;
+    border: 2px solid #aaa;
+    border-radius: 16px;
+    padding: 6px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .back-button button:hover {
+    background-color: #ddd;
+  }
+  
   
   #deckSelect {
     margin-top: 10px;
