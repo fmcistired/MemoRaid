@@ -82,6 +82,12 @@ import {
     const cardRef = doc(db, "decks", deckId, "cards", cardId);
     await updateDoc(cardRef, { front, back });
   }
+
+  export async function updateFlashcardLevel(deckId, cardId, level) {
+    const ref = doc(db, "decks", deckId, "cards", cardId);
+    await updateDoc(ref, { level });
+  }  
+
   
   
   // --------- USER STATS (XP, Level, Streak) -----------
