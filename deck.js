@@ -1,7 +1,7 @@
 // Confirmation message for console in Chrome
 console.log("deck.js loaded");
 
-import { getDecks, createDeck, deleteDeck, createFlashcard, getFlashcards, updateDeck } from './app.js';
+import { getDecks, createDeck, deleteDeck, createFlashcard, getFlashcards, updateDeck, updateFlashcard, deleteFlashcard} from './app.js';
 
 const deckListEl = document.getElementById("deckList");
 const deckDetailsEl = document.getElementById("deckDetails");
@@ -12,11 +12,18 @@ const createDeckBtn = document.getElementById("createDeckBtn");
 const flashcardModal = document.getElementById("flashcardModal");
 const closeFlashcardModal = document.getElementById("closeFlashcardModal");
 const createCardBtn = document.getElementById("createCardBtn");
+const editFlashcardModal = document.getElementById("editFlashcardModal");
+const closeEditFlashcardModal = document.getElementById("closeEditFlashcardModal");
+const saveFlashcardChanges = document.getElementById("saveFlashcardChanges");
 
+let editCardId = null;
 let currentDeckId = null;
 
 
 closeFlashcardModal.onclick = () => flashcardModal.classList.add("hidden");
+closeEditFlashcardModal.onclick = () => editFlashcardModal.classList.add("hidden");
+
+
 
 
 addDeckBtn.onclick = () => {
@@ -48,6 +55,16 @@ createDeckBtn.onclick = async () => {
   document.getElementById("deckDescInput").value = "";
   renderDecks();
 };
+
+saveFlashcardChanges.onclick = async () => {
+    const front = document.getElementById("editCardFront").value;
+    const back = document.getElementById("editCardBack").value;
+    if (!editCardId || !front || !back) return;
+  
+    await updateFlashcard(currentDeckId, editCardId, front, back);
+    editFlashcardModal.classList.add("hidden");
+    loadFlashcards(currentDeckId);
+  };
 
 async function renderDecks() {
   const decks = await getDecks();
@@ -116,11 +133,31 @@ async function loadFlashcards(deckId) {
     }
   
     list.innerHTML = flashcards.map(card =>
-      `<div class="card">
-        <strong>${card.front}</strong><br>
-        <small>${card.back}</small>
-      </div>`
-    ).join("");
+        `<div class="card">
+          <strong>${card.front}</strong><br>
+          <small>${card.back}</small><br>
+          <button class="edit-btn" data-id="${card.id}" data-front="${card.front}" data-back="${card.back}">✏️ Edit</button>
+          <button class="delete-btn" data-id="${card.id}">❌ Delete</button>
+        </div>`
+      ).join("");
+      
+      document.querySelectorAll(".edit-btn").forEach(btn => {
+        btn.onclick = () => {
+          editCardId = btn.dataset.id;
+          document.getElementById("editCardFront").value = btn.dataset.front;
+          document.getElementById("editCardBack").value = btn.dataset.back;
+          editFlashcardModal.classList.remove("hidden");
+        };
+      });
+      
+      document.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const cardId = btn.dataset.id;
+          await deleteFlashcard(currentDeckId, cardId);
+          loadFlashcards(currentDeckId);
+        };
+      });
+      
   }
   
   

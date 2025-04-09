@@ -77,6 +77,12 @@ import {
     const cardRef = doc(db, "decks", deckId, "cards", cardId);
     await deleteDoc(cardRef);
   }
+
+  export async function updateFlashcard(deckId, cardId, front, back) {
+    const cardRef = doc(db, "decks", deckId, "cards", cardId);
+    await updateDoc(cardRef, { front, back });
+  }
+  
   
   // --------- USER STATS (XP, Level, Streak) -----------
   
