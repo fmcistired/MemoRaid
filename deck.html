@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Deck Manager</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="deck-manager">
+    <section class="deck-list-container">
+      <h2>Deck List</h2>
+      <input type="text" id="searchDecks" placeholder="Search decks" />
+      <div id="deckList" class="deck-list"></div>
+      <button id="addDeckBtn" class="add-btn">+ Add a new deck</button>
+    </section>
+
+    <section class="deck-details-container">
+      <h2>Deck Details</h2>
+      <div id="deckDetails" class="deck-details">
+        <p>Select a deck to view flashcards</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Deck Modal -->
+  <div id="deckModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h3>Create Deck</h3>
+      <input id="deckNameInput" type="text" placeholder="Enter Deck Name..." />
+      <textarea id="deckDescInput" placeholder="Add description (optional)..."></textarea>
+      <button id="createDeckBtn">Create Deck</button>
+    </div>
+  </div>
+
+  <!-- Flashcard Modal -->
+  <div id="flashcardModal" class="modal hidden">
+   <div class="modal-content">
+     <span id="closeFlashcardModal" class="close">&times;</span>
+     <h3>Create Flashcard</h3>
+     <input id="cardFrontInput" type="text" placeholder="Front (Question)" />
+     <input id="cardBackInput" type="text" placeholder="Back (Answer)" />
+     <button id="createCardBtn">Save Flashcard</button>
+   </div>
+  </div>
+  
+  
+  <script type="module" src="deck.js"></script>
+</body>
+</html>

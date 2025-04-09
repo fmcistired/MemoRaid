@@ -82,4 +82,82 @@ body {
     text-align: center;
     border-radius: 8px;
   }
+
+
+/* Deck Manager Page */
+.deck-manager {
+    display: flex;
+    padding: 30px;
+    gap: 40px;
+    justify-content: center;
+  }
+  
+  .deck-list-container, .deck-details-container {
+    background: #e0e0e0;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+  }
+  
+  .deck-list button, .deck-details button {
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+  }
+  
+  .deck-card {
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 10px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .green-card {
+    background-color: #90ee90;
+    color: #000;
+  }
+  
+  .blue-card {
+    background-color: #6495ed;
+  }
+  
+  .add-btn {
+    background: #fff;
+    border: 2px dashed #444;
+    font-weight: bold;
+  }
+  
+  /* Modal */
+  .modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: #eee;
+    padding: 30px;
+    border-radius: 10px;
+    width: 300px;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+  }
   
