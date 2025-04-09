@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    display: flex;
+    background: #eee;
+  }
+  
+  #sidebar {
+    width: 200px;
+    background: #ddd;
+    height: 100vh;
+    padding-top: 20px;
+  }
+  
+  #sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #sidebar ul li {
+    padding: 12px;
+  }
+  
+  main {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .top-row, .middle-row, .bottom-row {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .card, .flashcard-card, .graph-card, .accuracy-card, .feedback-card {
+    background: #fff;
+    padding: 20px;
+    flex: 1;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  }
+  
+  .decks-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .deck {
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .deck.green { background: #b7ffb0; }
+  .deck.blue { background: #a9caff; }
+  .deck.add { background: #ddd; border: 1px dashed #333; }
+  
+  .level-bar {
+    width: 100%;
+    background: #eee;
+    border-radius: 8px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  #xp-bar {
+    background: #4d90fe;
+    display: block;
+    color: white;
+    padding: 4px;
+    text-align: center;
+  }
+  .done { color: green; }
+  .not-done { color: red; }
+  
+  .accuracy-box {
+    background: #b2ffb2;
+    font-size: 2rem;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+  }
+  
