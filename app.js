@@ -4,6 +4,7 @@ import {
     doc,
     getDocs,
     getDoc,
+    setDoc,
     addDoc,
     deleteDoc,
     updateDoc,
@@ -68,7 +69,7 @@ import {
       back,
       deckId,
       createdAt: Date.now(),
-      level: 1 // For spaced repetition logic later
+      level: 1
     };
     await addDoc(collection(db, "decks", deckId, "cards"), cardData);
   }
@@ -101,4 +102,29 @@ import {
   export async function updateUserStats({ xp = 0, level = 1, streak = 0 }) {
     const userRef = doc(db, "users", USER_ID);
     await setDoc(userRef, { xp, level, streak }, { merge: true });
+  }
+
+  export async function addXP(amount = 10) {
+    const userRef = doc(db, "users", USER_ID);
+    const snapshot = await getDoc(userRef);
+  
+    let xp = 0;
+    let level = 1;
+    let streak = 0;
+  
+    if (snapshot.exists()) {
+      const data = snapshot.data();
+      xp = data.xp || 0;
+      level = data.level || 1;
+      streak = data.streak || 0;
+    }
+  
+    xp += amount;
+    if (xp >= 100) {
+      level += Math.floor(xp / 100);
+      xp = xp % 100;
+    }
+  
+    await setDoc(userRef, { xp, level, streak }, { merge: true });
+    return { xp, level, streak };
   }

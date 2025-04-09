@@ -22,9 +22,9 @@
   
     <main id="dashboard">
       <section class="top-row">
-        <div class="card">User Level<br><div class="level-bar"><span id="xp-bar" style="width: 50%;">Level 5 – 250 XP</span></div></div>
+        <div class="card">User Level<br><div class="level-bar"><span id="xp-bar" style="width: 50%;"></span></div></div>
         <div class="card">Daily Goals<ul><li class="done">✓ Complete 10 flashcards</li><li class="done">✓ Review weak topics</li><li class="not-done">✗ Maintain streak</li></ul></div>
-        <div class="card">Study Streak<br><div id="streak-box">🔥 4 Day Streak</div></div>
+        <div class="card">Study Streak<br><div id="streak-box"></div></div>
       </section>
   
       <section class="middle-row">
@@ -52,6 +52,22 @@
     </main>
   
     <script src="app.js"></script>
+    <script type="module">
+      import { getUserStats } from './app.js';
+    
+      async function updateUI() {
+        const stats = await getUserStats();
+        if (!stats) return;
+    
+        const xpBar = document.getElementById("xp-bar");
+        xpBar.textContent = `Level ${stats.level} - ${stats.xp} XP`;
+    
+        const streakBox = document.getElementById("streak-box");
+        streakBox.textContent = `🔥 ${stats.streak || 0} Day Streak`;
+      }
+    
+      updateUI();
+    </script>    
   </body>
   </html>
   

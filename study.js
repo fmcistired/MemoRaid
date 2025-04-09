@@ -5,7 +5,8 @@ import { GEMINI_API_KEY } from "./config.js";
 import {
     getDecks,
     getFlashcards,
-    updateFlashcardLevel
+    updateFlashcardLevel,
+    addXP
   } from "./app.js";
 
   
@@ -57,11 +58,6 @@ async function fetchAIHint(prompt) {
       return "❌ Could not generate a hint.";
     }
   }
-
-  
-  
-  
-
   
   deckSelect.onchange = async () => {
     const deckId = deckSelect.value;
@@ -130,6 +126,9 @@ async function fetchAIHint(prompt) {
   
       await updateFlashcardLevel(deckId, currentCard.id, level);
   
+      const result = await addXP(10); // update 
+
+
       currentCardIndex = (currentCardIndex + 1) % flashcards.length;
       isFlipped = false;
       showFront();
