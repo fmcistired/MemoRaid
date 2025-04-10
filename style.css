@@ -41,7 +41,19 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
   }
-  
+
+  li.done { color: green; text-decoration: line-through; }
+  li.not-done { color: red; }
+  .goal-actions {
+    margin-left: 10px;
+    font-size: 0.8em;
+    cursor: pointer;
+    color: #555;
+  }
+  .goal-actions span {
+    margin: 0 5px;
+  }
+
   .decks-card {
     display: flex;
     flex-direction: column;
@@ -54,6 +66,50 @@ body {
     text-align: center;
   }
   
+  .flashcard-preview {
+    position: relative;
+    background: #444;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 16px;
+    padding: 20px;
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    filter: blur(3px);
+    transition: filter 0.3s;
+  }
+  
+  .flashcard-preview:hover {
+    filter: blur(0);
+  }
+  
+  .flashcard-preview-front {
+    max-width: 80%;
+    z-index: 1;
+  }
+  
+  .preview-button {
+    position: absolute;
+    background: rgba(255, 255, 255, 0); /* translucent white */
+    color: white;
+    backdrop-filter: blur(4px); 
+    font-weight: bold;
+    border-radius: 12px;
+    padding: 10px 20px;
+    cursor: pointer;
+    z-index: 2;
+    transition: background 0.3s ease;
+  }
+  
+  .preview-button:hover {
+    background: rgba(255, 255, 255, 0.35);
+  }
+  
+
   .deck.green { background: #b7ffb0; }
   .deck.blue { background: #a9caff; }
   .deck.add { background: #ddd; border: 1px dashed #333; }
