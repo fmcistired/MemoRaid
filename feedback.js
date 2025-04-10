@@ -63,21 +63,35 @@ document.getElementById("generateFeedbackBtn").onclick = async () => {
   aiFeedback.textContent = "Generating feedback with AI...";
 
   const weakFlashcardList = statsSummary.weakCards
-  .slice(0, 5)  
-  .map(card => `• "${card.front}" (Deck: ${card.deck})`)
+  .slice(0, 5)
+  .map(card => `- "${card.front}" (Deck: ${card.deck})`)
   .join("\n");
   
+  const totalCards = statsSummary.totalCards;
+  const avgDifficulty = statsSummary.totalCards > 0
+  ? (statsSummary.totalDifficulty / statsSummary.totalCards).toFixed(2)
+  : "N/A";
+  
+  const studiedDecks = Object.keys(statsSummary.deckStats).join(", ");
+  const weakestDeck = weakestDeckEl.textContent;
+
   const prompt = `
-  I’m a student using a flashcard study app. 
-  I studied ${statsSummary.totalCards} cards across the following decks: 
-  ${Object.keys(statsSummary.deckStats).join(", ")}.
-  
-  My average difficulty rating was ${(statsSummary.totalDifficulty / statsSummary.totalCards).toFixed(2)}.
-  I struggled most with "${weakestDeckEl.textContent}".
-  
-  Here are some specific flashcards I struggled with:
+  You are an educational assistant. A student used a flashcard study app.
+
+  - Total cards studied: ${totalCards}
+  - Decks studied: ${studiedDecks}
+  - Average difficulty score: ${avgDifficulty}
+  - Weakest deck: "${weakestDeck}"
+
+  These are some of the specific flashcards the student struggled with:
   ${weakFlashcardList}
-  Based on this, give me personalized, constructive study feedback in 2–3 sentences.`;
+
+  Give a motivational, constructive 2–3 sentence feedback:
+  - Highlight what topics the user struggled
+  - Suggest how to improve those areas
+  - Use plain, friendly tone
+  `;
+
 
   const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
     method: "POST",
