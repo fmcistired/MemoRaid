@@ -20,6 +20,9 @@ import {
   let flashcards = [];
   let currentCardIndex = 0;
   let isFlipped = false;
+  let deckCompleted = false;
+  let timesRepeated = 0;
+
   
   async function populateDecks() {
     const decks = await getDecks();
@@ -74,6 +77,8 @@ async function fetchAIHint(prompt) {
     flashcards = await getFlashcards(deckId);
     currentCardIndex = 0;
     isFlipped = false;
+    deckCompleted = false;
+    timesRepeated = 0;
   
     titleEl.textContent = deckSelect.options[deckSelect.selectedIndex].textContent;
   
@@ -83,6 +88,7 @@ async function fetchAIHint(prompt) {
       showFront();
     }
   };
+  
   
   function showFront() {
     if (!flashcards.length) return;
@@ -126,14 +132,29 @@ async function fetchAIHint(prompt) {
   
       await updateFlashcardLevel(deckId, currentCard.id, level);
   
-      const result = await addXP(10); // update 
-
-
-      currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+      // XP logic
+      let xpAmount = 10;
+      if (deckCompleted) xpAmount = 5;
+  
+      const result = await addXP(xpAmount);
+  
+      // Move to next
+      currentCardIndex++;
+  
+      if (currentCardIndex >= flashcards.length) {
+        deckCompleted = true;
+        timesRepeated++;
+        currentCardIndex = 0;
+  
+        // Show completion message
+        alert(`✅ You completed this deck!\nRepeats will now earn half XP.`);
+      }
+  
       isFlipped = false;
       showFront();
     };
   });
+  
   
   // Hint Modal
   hintBtn.onclick = async () => {

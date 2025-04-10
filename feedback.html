@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MemoRaid – Feedback</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="study-layout">
+    <div class="back-button">
+        <button onclick="location.href='index.html'">←</button>
+    </div>
+    <h2>📊 Your Feedback Summary</h2>
+
+    <div class="card" id="stats-summary">
+      <p><strong>Most Studied Deck:</strong> <span id="mostStudied">...</span></p>
+      <p><strong>Average Difficulty:</strong> <span id="avgDifficulty">...</span></p>
+      <p><strong>Weakest Deck:</strong> <span id="weakestDeck">...</span></p>
+    </div>
+
+    <button id="generateFeedbackBtn">🧠 Generate AI Feedback</button>
+
+    <div class="card" id="aiFeedbackBox" style="display: none;">
+      <h3>AI Feedback:</h3>
+      <p id="aiFeedback">...</p>
+    </div>
+  </main>
+
+  <script type="module" src="feedback.js"></script>
+</body>
+</html>
