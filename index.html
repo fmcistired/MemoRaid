@@ -1,269 +1,317 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>MemoRaid - Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MemoRaid - Dashboard</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  </head>
-  <body>
-    <aside id="sidebar">
-      <nav>
-        <ul>
-          <li><a href="index.html"><i class="fa-solid fa-house"></i>Home</a></li>
-          <li><a href="study.html"><i class="fa-solid fa-brain"></i>Study</a></li>
-          <li><a href="deck.html"><i class="fa-solid fa-layer-group"></i>Decks</a></li>
-          <li><a href="feedback.html"><i class="fa-solid fa-chart-line"></i>Feedback</a></li>
-          <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
-        </ul>
-      </nav>
-    </aside>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+  <!-- Sidebar navigation with logo and nav links -->
+  <aside id="sidebar">
+    <div class="logo-container">
+      <img src="/assets/MemoRaid Logo.png" alt="MemoRaid Logo" class="logo-img" />
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i>Home</a></li>
+        <li><a href="study.html"><i class="fa-solid fa-brain"></i>Study</a></li>
+        <li><a href="deck.html"><i class="fa-solid fa-layer-group"></i>Decks</a></li>
+        <li><a href="feedback.html"><i class="fa-solid fa-chart-line"></i>Feedback</a></li>
+        <li><a href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main dashboard content -->
+  <main id="dashboard">
+
+    <!-- Top row: User level, daily goals, and streak -->
+    <section class="top-row">
+
+      <!-- XP and level progress bar -->
+      <div class="card">
+        <h3>User Level</h3>
+        <div class="level-bar">
+          <div id="xp-bar"></div>
+          <div id="xp-text"></div>
+        </div>
+      </div>
+
+      <!-- Editable daily goals list -->
+      <div class="card">
+        <h3>Daily Goals</h3>
+        <ul id="goalList"></ul>
+        <input id="goalInput" type="text" placeholder="Add a new goal..." />
+        <button id="addGoalBtn">Add Goal</button>
+      </div>
+
+      <!-- Streak tracker -->
+      <div class="card">
+        <h3>Study Streak</h3>
+        <div id="streak-box"></div>
+      </div>
+    </section>
+
+
+    <!-- Middle row: Flashcard preview and recent decks -->
+    <section class="middle-row">
+
+      <!-- Random flashcard preview with blurred content -->
+      <div class="flashcard-preview" id="previewCard">
+        <div class="flashcard-preview-front" id="previewFront">Loading preview...</div>
+        <button class="preview-button" onclick="location.href='study.html'">Click to Study ↗</button>
+      </div>
+
+      <!-- Recently used decks -->
+      <div class="decks-card" id="recentDecks"></div>
+    </section>
+
+
+    <!-- Bottom row: XP, accuracy, and AI feedback summary -->
+    <section class="bottom-row">
+
+      <!-- XP earned overview -->
+      <div class="graph-card">
+        <h3>XP Gained</h3>
+      </div>
+
+      <!-- Overall card answer accuracy -->
+      <div class="accuracy-card">
+        <h3>Accuracy</h3>
+        <div class="accuracy-box"></div>
+      </div>
+
+      <!-- AI-generated mini feedback summary -->
+      <div class="feedback-card" id="dashboardFeedback">
+        <h3>Feedback</h3>
+        <p id="shortFeedback">Generating summary...</p>
+      </div>
+
+    </section>
+  </main>
+
   
-    <main id="dashboard">
-      <section class="top-row">
-        <div class="card">User Level<br><div class="level-bar"><span id="xp-bar" style="width: 50%;"></span></div></div>
-        
-        <div class="card">
-          <h3>📝 Daily Goals</h3>
-          <ul id="goalList"></ul>
-          <input id="goalInput" type="text" placeholder="Add a new goal..." />
+  <!-- JavaScript logic embedded in module scope -->
+  <script type="module">
+    import { getUserStats, getDecks, getFlashcards } from './app.js';
+    import { GEMINI_API_KEY } from './config.js';
 
-          <button id="addGoalBtn">Add Goal</button>
-        </div>
-        
-        <div class="card">Study Streak<br><div id="streak-box"></div></div>
-      </section>
-  
-      <section class="middle-row">
-        <div class="flashcard-preview" id="previewCard">
-          <div class="flashcard-preview-front" id="previewFront">Loading preview...</div>
-          <button class="preview-button" onclick="location.href='study.html'">Click to Study ↗</button>
-        </div>
-        
-        <div class="decks-card">
-          <div class="decks-card" id="recentDecks"></div>
-        </div>
-      </section>
-  
-      <section class="bottom-row">
-        <div class="graph-card">
-          <h3>XP Gained</h3>
-        </div>
-        <div class="accuracy-card">
-          <h3>Accuracy</h3>
-          <div class="accuracy-box"></div>
-        </div>
-        <div class="feedback-card" id="dashboardFeedback">
-          <h3>Feedback</h3>
-          <p id="shortFeedback">Generating summary...</p>
-        </div>        
-      </section>
-    </main>
-  
-    <script type="module">
-      import { getUserStats } from './app.js';
-    
-      async function updateUI() {
-        const stats = await getUserStats();
-        if (!stats) return;
-    
-        const xpBar = document.getElementById("xp-bar");
-        xpBar.textContent = `Level ${stats.level} - ${stats.xp} XP`;
+    // Update XP bar, level, and streak display
+    async function updateUI() {
+      const stats = await getUserStats();
+      if (!stats) return;
 
-        const percent = (stats.xp / 100) * 100;
-        xpBar.style.width = `${percent}%`;
-            
-        const streakBox = document.getElementById("streak-box");
-        streakBox.textContent = `🔥 ${stats.streak || 0} Day Streak`;
+      const xpBar = document.getElementById("xp-bar");
+      const xpText = document.getElementById("xp-text");
 
-        const graphCard = document.querySelector(".graph-card");
-        graphCard.innerHTML += `<p>Total XP Earned: ${stats.level * 100 + stats.xp}</p>`;
+      const percent = (stats.xp / 100) * 100;
+      xpBar.style.width = `${percent}%`;
+      xpText.textContent = `Level ${stats.level} - ${stats.xp} XP`;
 
-      }
+      const streakBox = document.getElementById("streak-box");
+      streakBox.textContent = `🔥 ${stats.streak || 0} Day Streak`;
 
-      async function loadRecentDecks() {
-        const decks = await getDecks();
-        const container = document.getElementById("recentDecks");
-        container.innerHTML = "";
+      // Display total XP earned
+      const graphCard = document.querySelector(".graph-card");
+      graphCard.innerHTML += `<p>Total XP Earned: ${stats.level * 100 + stats.xp}</p>`;
+    }
 
-        decks.slice(0, 2).forEach((deck, i) => {
+    // Display most recently created decks (limit: 2)
+    async function loadRecentDecks() {
+      const decks = await getDecks();
+      const container = document.getElementById("recentDecks");
+      container.innerHTML = "";
+
+      decks.slice(0, 2).forEach((deck, i) => {
         const div = document.createElement("div");
         div.className = "deck " + (i % 2 === 0 ? "green" : "blue");
-        div.textContent = deck.name;
+        div.innerHTML = `<strong>${deck.name}</strong>`;
+        div.onclick = () => location.href = "deck.html";
         container.appendChild(div);
-        });
+      });
 
-        const add = document.createElement("div");
-        add.className = "deck add";
-        add.textContent = "+ Create new deck";
-        add.onclick = () => window.location.href = "deck.html";
-        container.appendChild(add);
-      }
-      
-      import { getDecks, getFlashcards } from './app.js';
+      // Add a link to create a new deck
+      const add = document.createElement("div");
+      add.className = "deck add";
+      add.textContent = "+ Create new deck";
+      add.onclick = () => window.location.href = "deck.html";
+      container.appendChild(add);
+    }
 
-      async function updateAccuracyBox() {
-        const decks = await getDecks();
-        let highScoreCount = 0;
-        let total = 0;
+    // Calculate and display user accuracy (% of cards marked as level 4 or 5)
+    async function updateAccuracyBox() {
+      const decks = await getDecks();
+      let highScoreCount = 0;
+      let total = 0;
 
-        for (const deck of decks) {
-          const cards = await getFlashcards(deck.id);
-          for (const card of cards) {
-            if (card.level) {
-              total++;
-              if (card.level >= 4) highScoreCount++;
-            }
+      for (const deck of decks) {
+        const cards = await getFlashcards(deck.id);
+        for (const card of cards) {
+          if (card.level) {
+            total++;
+            if (card.level >= 4) highScoreCount++;
           }
         }
-
-        const accuracy = total > 0 ? Math.round((highScoreCount / total) * 100) : 0;
-        document.querySelector(".accuracy-box").textContent = `✅ ${accuracy}%`;
       }
 
-      const goalList = document.getElementById("goalList");
-      const goalInput = document.getElementById("goalInput");
-      const addGoalBtn = document.getElementById("addGoalBtn");
+      const accuracy = total > 0 ? Math.round((highScoreCount / total) * 100) : 0;
+      document.querySelector(".accuracy-box").textContent = `${accuracy}%`;
+    }
 
-      // Load saved goals
-      let goals = JSON.parse(localStorage.getItem("dailyGoals")) || [];
+    // ----- Daily Goals System -----
 
-      function renderGoals() {
-        goalList.innerHTML = "";
-        goals.forEach((goal, i) => {
-          const li = document.createElement("li");
-          li.textContent = (goal.done ? "✓ " : "✗ ") + goal.text;
-          li.className = goal.done ? "done" : "not-done";
+    const goalList = document.getElementById("goalList");
+    const goalInput = document.getElementById("goalInput");
+    const addGoalBtn = document.getElementById("addGoalBtn");
 
-          // Add controls
-          const actions = document.createElement("span");
-          actions.className = "goal-actions";
+    // Load saved goals from localStorage
+    let goals = JSON.parse(localStorage.getItem("dailyGoals")) || [];
 
-          actions.innerHTML = `
-            <span onclick="toggleGoal(${i})">✔️</span>
-            <span onclick="editGoal(${i})">✏️</span>
-            <span onclick="deleteGoal(${i})">🗑️</span>
-          `;
+    function renderGoals() {
+      goalList.innerHTML = "";
+      goals.forEach((goal, i) => {
+        const li = document.createElement("li");
+        li.textContent = (goal.done ? "✓ " : "✗ ") + goal.text;
+        li.className = goal.done ? "done" : "not-done";
 
-          li.appendChild(actions);
-          goalList.appendChild(li);
-        });
-      }
-
-      function saveGoals() {
-        localStorage.setItem("dailyGoals", JSON.stringify(goals));
-        renderGoals();
-      }
-
-      addGoalBtn.onclick = () => {
-        const text = goalInput.value.trim();
-        if (!text) return;
-        goals.push({ text, done: false });
-        goalInput.value = "";
-        saveGoals();
-      };
-
-      window.toggleGoal = (i) => {
-        goals[i].done = !goals[i].done;
-        saveGoals();
-      };
-
-      window.editGoal = (i) => {
-        const newText = prompt("Edit your goal:", goals[i].text);
-        if (newText !== null && newText.trim() !== "") {
-          goals[i].text = newText.trim();
-          saveGoals();
-        }
-      };
-
-      window.deleteGoal = (i) => {
-        if (confirm("Delete this goal?")) {
-          goals.splice(i, 1);
-          saveGoals();
-        }
-      };
-
-      import { GEMINI_API_KEY } from './config.js';
-      async function generateShortDashboardFeedback() {
-        const decks = await getDecks();
-        let weakCards = [];
-        let deckStats = {};
-        let totalDifficulty = 0;
-        let totalCards = 0;
-
-        for (const deck of decks) {
-          const cards = await getFlashcards(deck.id);
-          let lows = 0;
-
-          for (const card of cards) {
-            if (card.level) {
-              totalCards++;
-              totalDifficulty += card.level;
-              if (card.level <= 2) {
-                lows++;
-                weakCards.push(card.front);
-              }
-            }
-          }
-
-          deckStats[deck.name] = lows;
-        }
-
-        const sorted = Object.entries(deckStats).sort((a, b) => b[1] - a[1]);
-        const weakestDeck = sorted[0]?.[0] || "N/A";
-
-        const prompt = `
-        Give one short sentence of feedback to a student who is struggling with the deck "${weakestDeck}".
-        Mention that deck, and optionally one card they got wrong: "${weakCards[0]}".
+        // Add edit/delete/toggle buttons
+        const actions = document.createElement("span");
+        actions.className = "goal-actions";
+        actions.innerHTML = `
+          <span onclick="toggleGoal(${i})">✔️</span>
+          <span onclick="editGoal(${i})">✏️</span>
+          <span onclick="deleteGoal(${i})">🗑️</span>
         `;
+        li.appendChild(actions);
+        goalList.appendChild(li);
+      });
+    }
 
-
-        try {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: prompt }] }]
-            })
-          });
-
-          const data = await res.json();
-          const feedback = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Couldn't generate feedback.";
-          document.getElementById("shortFeedback").textContent = feedback;
-        } catch (err) {
-          console.error("Dashboard feedback error:", err);
-          document.getElementById("shortFeedback").textContent = "Feedback unavailable.";
-        }
-      }
-
-      async function loadFlashcardPreview() {
-        const decks = await getDecks();
-        const allCards = [];
-
-        for (const deck of decks) {
-          const cards = await getFlashcards(deck.id);
-          allCards.push(...cards);
-        }
-
-        if (allCards.length === 0) {
-          document.getElementById("previewFront").textContent = "No flashcards yet.";
-          return;
-        }
-
-        const random = allCards[Math.floor(Math.random() * allCards.length)];
-        document.getElementById("previewFront").textContent = random.front || "Card content unavailable.";
-      }
-
-      loadFlashcardPreview();
-
-
-      generateShortDashboardFeedback();
+    function saveGoals() {
+      localStorage.setItem("dailyGoals", JSON.stringify(goals));
       renderGoals();
-      updateAccuracyBox();
-      loadRecentDecks();
-      updateUI();
-    </script>    
-  </body>
-  </html>
-  
+    }
+
+    // Add a new goal
+    addGoalBtn.onclick = () => {
+      const text = goalInput.value.trim();
+      if (!text) return;
+      goals.push({ text, done: false });
+      goalInput.value = "";
+      saveGoals();
+    };
+
+    // Toggle completion status
+    window.toggleGoal = (i) => {
+      goals[i].done = !goals[i].done;
+      saveGoals();
+    };
+
+    // Edit an existing goal
+    window.editGoal = (i) => {
+      const newText = prompt("Edit your goal:", goals[i].text);
+      if (newText !== null && newText.trim() !== "") {
+        goals[i].text = newText.trim();
+        saveGoals();
+      }
+    };
+
+    // Delete a goal
+    window.deleteGoal = (i) => {
+      if (confirm("Delete this goal?")) {
+        goals.splice(i, 1);
+        saveGoals();
+      }
+    };
+
+    // Generate 1-line Gemini feedback and insert into dashboard
+    async function generateShortDashboardFeedback() {
+      const decks = await getDecks();
+      let weakCards = [];
+      let deckStats = {};
+      let totalDifficulty = 0;
+      let totalCards = 0;
+
+      for (const deck of decks) {
+        const cards = await getFlashcards(deck.id);
+        let lows = 0;
+
+        for (const card of cards) {
+          if (card.level !== undefined) {
+            totalCards++;
+            totalDifficulty += card.level;
+            if (card.level <= 2) {
+              lows++;
+              if (card.front) weakCards.push(card.front);
+            }
+          }
+        }
+
+        deckStats[deck.name] = lows;
+      }
+
+      const sorted = Object.entries(deckStats).sort((a, b) => b[1] - a[1]);
+      const weakestDeck = sorted[0]?.[0] || "N/A";
+      const weakestCard = weakCards[0] ? `"${weakCards[0]}"` : "a difficult flashcard";
+
+      let prompt = "";
+
+      if (weakCards.length === 0) {
+        prompt = `Give a short motivational message (1 sentence), congratulating the user for completing their flashcards.`;
+      } else {
+        prompt = `
+          Give ONE SHORT sentence of feedback to a student who is struggling with the "${weakestDeck}" deck.
+          Mention one weak flashcard like ${weakestCard}, and give a helpful suggestion to improve.
+        `;
+      }
+
+      try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }]
+          })
+        });
+
+        const data = await res.json();
+        const feedback = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        document.getElementById("shortFeedback").textContent = feedback || "You're doing great! Nothing to improve today.";
+      } catch (err) {
+        console.error("Dashboard feedback error:", err);
+        document.getElementById("shortFeedback").textContent = "Feedback unavailable.";
+      }
+    }
+
+    // Show random card preview in dashboard flashcard section
+    async function loadFlashcardPreview() {
+      const decks = await getDecks();
+      const allCards = [];
+
+      for (const deck of decks) {
+        const cards = await getFlashcards(deck.id);
+        allCards.push(...cards);
+      }
+
+      if (allCards.length === 0) {
+        document.getElementById("previewFront").textContent = "No flashcards yet.";
+        return;
+      }
+
+      const random = allCards[Math.floor(Math.random() * allCards.length)];
+      document.getElementById("previewFront").textContent = random.front || "Card content unavailable.";
+    }
+
+    // Initialize all dashboard features
+    loadFlashcardPreview();
+    generateShortDashboardFeedback();
+    renderGoals();
+    updateAccuracyBox();
+    loadRecentDecks();
+    updateUI();
+  </script>
+</body>
+</html>

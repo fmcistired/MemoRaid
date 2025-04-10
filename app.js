@@ -1,3 +1,4 @@
+// Firebase Firestore Imports
 import {
     db,
     collection,
@@ -17,6 +18,7 @@ import {
   
   // --------- DECK FUNCTIONS -----------
   
+  // Fetch all decks belonging to current user
   export async function getDecks() {
     const q = query(collection(db, "decks"), where("userId", "==", USER_ID));
     const snapshot = await getDocs(q);
@@ -27,6 +29,7 @@ import {
     return decks;
   }
   
+  // Create a new deck with name + optional description
   export async function createDeck(name, description = "") {
     const deckData = {
       name,
@@ -38,10 +41,12 @@ import {
     return newDeck.id;
   }
   
+  // Delete a deck by its Firestore ID
   export async function deleteDeck(deckId) {
     await deleteDoc(doc(db, "decks", deckId));
   }
 
+  // Update deck name and/or description
   export async function updateDeck(deckId, newName, newDesc) {
     const ref = doc(db, "decks", deckId);
     await updateDoc(ref, {
@@ -53,6 +58,7 @@ import {
   
   // --------- FLASHCARD FUNCTIONS -----------
   
+  // Fetch all flashcards from a specific deck
   export async function getFlashcards(deckId) {
     const cardsCol = collection(db, "decks", deckId, "cards");
     const snapshot = await getDocs(cardsCol);
@@ -63,6 +69,7 @@ import {
     return cards;
   }
   
+  // Create a new flashcard in a given deck
   export async function createFlashcard(deckId, front, back) {
     const cardData = {
       front,
@@ -74,16 +81,19 @@ import {
     await addDoc(collection(db, "decks", deckId, "cards"), cardData);
   }
   
+  // Delete a flashcard by ID from a specific deck
   export async function deleteFlashcard(deckId, cardId) {
     const cardRef = doc(db, "decks", deckId, "cards", cardId);
     await deleteDoc(cardRef);
   }
 
+  // Update a flashcard's front/back text
   export async function updateFlashcard(deckId, cardId, front, back) {
     const cardRef = doc(db, "decks", deckId, "cards", cardId);
     await updateDoc(cardRef, { front, back });
   }
 
+  // Update the difficulty level of a flashcard
   export async function updateFlashcardLevel(deckId, cardId, level) {
     const ref = doc(db, "decks", deckId, "cards", cardId);
     await updateDoc(ref, { level });
@@ -93,17 +103,20 @@ import {
   
   // --------- USER STATS (XP, Level, Streak) -----------
   
+  // Get current user stats (XP, level, streak)
   export async function getUserStats() {
     const userRef = doc(db, "users", USER_ID);
     const snapshot = await getDoc(userRef);
     return snapshot.exists() ? snapshot.data() : null;
   }
-  
+
+  // Manually update XP, level, or streak  
   export async function updateUserStats({ xp = 0, level = 1, streak = 0 }) {
     const userRef = doc(db, "users", USER_ID);
     await setDoc(userRef, { xp, level, streak }, { merge: true });
   }
 
+  // Add XP and auto-calculate level ups
   export async function addXP(amount = 10) {
     const userRef = doc(db, "users", USER_ID);
     const snapshot = await getDoc(userRef);
@@ -120,6 +133,8 @@ import {
     }
   
     xp += amount;
+
+    // Level up logic: every 100 XP = new level
     if (xp >= 100) {
       level += Math.floor(xp / 100);
       xp = xp % 100;

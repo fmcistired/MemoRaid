@@ -1,325 +1,383 @@
+/* Global layout */
 body {
-    margin: 0;
-    font-family: sans-serif;
-    display: flex;
-    background: #eee;
-  }
-  
-  #sidebar {
-    width: 200px;
-    background: #ddd;
-    height: 100vh;
-    padding-top: 20px;
-  }
-  
-  #sidebar ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  #sidebar ul li {
-    padding: 12px;
-  }
-  
-  main {
-    flex-grow: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .top-row, .middle-row, .bottom-row {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .card, .flashcard-card, .graph-card, .accuracy-card, .feedback-card {
-    background: #fff;
-    padding: 20px;
-    flex: 1;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-  }
+  margin: 0;
+  font-family: sans-serif;
+  display: flex;
+  background: #eee;
+}
 
-  li.done { color: green; text-decoration: line-through; }
-  li.not-done { color: red; }
-  .goal-actions {
-    margin-left: 10px;
-    font-size: 0.8em;
-    cursor: pointer;
-    color: #555;
-  }
-  .goal-actions span {
-    margin: 0 5px;
-  }
+/* Sidebar navigation */
+#sidebar {
+  width: 200px;
+  background: #ddd;
+  height: 100vh;
+  padding-top: 20px;
+}
 
-  .decks-card {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .deck {
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-  }
-  
-  .flashcard-preview {
-    position: relative;
-    background: #444;
-    color: white;
-    font-size: 1.2rem;
-    border-radius: 16px;
-    padding: 20px;
-    height: 200px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    filter: blur(3px);
-    transition: filter 0.3s;
-  }
-  
-  .flashcard-preview:hover {
-    filter: blur(0);
-  }
-  
-  .flashcard-preview-front {
-    max-width: 80%;
-    z-index: 1;
-  }
-  
-  .preview-button {
-    position: absolute;
-    background: rgba(255, 255, 255, 0); /* translucent white */
-    color: white;
-    backdrop-filter: blur(4px); 
-    font-weight: bold;
-    border-radius: 12px;
-    padding: 10px 20px;
-    cursor: pointer;
-    z-index: 2;
-    transition: background 0.3s ease;
-  }
-  
-  .preview-button:hover {
-    background: rgba(255, 255, 255, 0.35);
-  }
-  
+#sidebar ul {
+  list-style: none;
+  padding: 0;
+}
 
-  .deck.green { background: #b7ffb0; }
-  .deck.blue { background: #a9caff; }
-  .deck.add { background: #ddd; border: 1px dashed #333; }
-  
-  .level-bar {
-    width: 100%;
-    background: #eee;
-    border-radius: 8px;
-    margin-top: 10px;
-    overflow: hidden;
-  }
-  #xp-bar {
-    background: #4d90fe;
-    display: block;
-    color: white;
-    padding: 4px;
-    text-align: center;
-  }
-  .done { color: green; }
-  .not-done { color: red; }
-  
-  .accuracy-box {
-    background: #b2ffb2;
-    font-size: 2rem;
-    padding: 20px;
-    text-align: center;
-    border-radius: 8px;
-  }
+#sidebar ul li {
+  padding: 12px;
+}
 
+/* Main content area */
+main {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Logo styling inside sidebar */
+.logo-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.logo-img {
+  width: 60px;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Dashboard rows */
+.top-row, .middle-row, .bottom-row {
+  display: flex;
+  gap: 20px;
+}
+
+/* Reusable card style blocks */
+.card, .flashcard-card, .graph-card, .accuracy-card, .feedback-card {
+  background: #fff;
+  padding: 20px;
+  flex: 1;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+/* Daily goal status styling */
+li.done {
+  color: green;
+  text-decoration: line-through;
+}
+
+li.not-done {
+  color: red;
+}
+
+.goal-actions {
+  margin-left: 10px;
+  font-size: 0.8em;
+  cursor: pointer;
+  color: #555;
+}
+
+.goal-actions span {
+  margin: 0 5px;
+}
+
+/* Deck list on dashboard */
+.decks-card {
+  display: flex;
+  width: 400px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.deck {
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* Flashcard preview block (with blur) */
+.flashcard-preview {
+  background: #444;
+  color: white;
+  font-size: 1.2rem;
+  border-radius: 16px;
+  height: 200px;
+  overflow: hidden;
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  filter: blur(3px);
+  transition: filter 0.3s ease;
+  padding: 20px;
+}
+
+.flashcard-preview:hover {
+  filter: blur(0);
+}
+
+.flashcard-preview-front {
+  max-width: 80%;
+  z-index: 1;
+}
+
+/* Study button overlaying the flashcard preview */
+.preview-button {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 2;
+  backdrop-filter: blur(3px);
+  text-shadow: 0 0 4px black;
+}
+
+.preview-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Deck color variations */
+.deck.green { background: #b7ffb0; }
+.deck.blue { background: #a9caff; }
+.deck.add { background: #ddd; border: 1px dashed #333; }
+
+/* XP progress bar */
+.level-bar {
+  position: relative;
+  width: 100%;
+  background: #eee;
+  border-radius: 10px;
+  height: 30px;
+  overflow: hidden;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#xp-bar {
+  background: linear-gradient(90deg, #4d90fe, #357ae8);
+  height: 100%;
+  width: 0%;
+  transition: width 0.5s ease-in-out;
+}
+
+#xp-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Accuracy stat */
+.accuracy-box {
+  background: #b2ffb2;
+  font-size: 2rem;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+}
 
 /* Deck Manager Page */
-  .deck-manager {
-    display: flex;
-    padding: 30px;
-    gap: 40px;
-    justify-content: center;
-  }
-  
-  .deck-list-container, .deck-details-container {
-    background: #e0e0e0;
-    padding: 20px;
-    border-radius: 10px;
-    width: 300px;
-  }
-  
-  .deck-list button, .deck-details button {
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 10px;
-    border: none;
-  }
-  
-  .deck-card {
-    padding: 15px;
-    margin-top: 10px;
-    border-radius: 10px;
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .green-card {
-    background-color: #90ee90;
-    color: #000;
-  }
-  
-  .blue-card {
-    background-color: #6495ed;
-  }
-  
-  .add-btn {
-    background: #fff;
-    border: 2px dashed #444;
-    font-weight: bold;
-  }
-  
-  .modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modal-content {
-    background: #eee;
-    padding: 30px;
-    border-radius: 10px;
-    width: 300px;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  .close {
-    float: right;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  
-/* Study Page */
-  .study-layout {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding: 40px;
-  }
-  
-  .study-header {
-    text-align: center;
-  }
+.deck-manager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
+  min-height: 50vh;
+  box-sizing: border-box;
+}
 
-  .back-button {
-    align-self: flex-start;
-    margin-bottom: -20px;
-  }
-  
-  .back-button button {
-    background-color: #fff;
-    border: 2px solid #aaa;
-    border-radius: 16px;
-    padding: 6px 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .back-button button:hover {
-    background-color: #ddd;
-  }
-  
-  
-  #deckSelect {
-    margin-top: 10px;
-    padding: 8px 12px;
-  }
-  
-  .study-body {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .flashcard {
-    width: 400px;
-    height: 220px;
-    background-color: #444;
-    color: white;
-    border-radius: 20px;
-    font-size: 1.3rem;
-    padding: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
-  
-  .difficulty-bar {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 0;
-    right: -60px;
-  }
-  
-  .diff {
-    margin: 5px;
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: 50%;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .diff-1 { background-color: #f44336; }
-  .diff-2 { background-color: #ff9800; }
-  .diff-3 { background-color: #ffeb3b; color: black; }
-  .diff-4 { background-color: #8bc34a; }
-  .diff-5 { background-color: #4caf50; }
-  
-  .nav-controls {
-    margin-top: 20px;
-  }
-  
-  .nav-controls button {
-    padding: 10px 20px;
-    margin: 0 10px;
-    font-size: 1.1rem;
-    border-radius: 10px;
-  }
-  
-  .hint-btn {
-    margin-top: 20px;
-    background-color: #d0aaff;
-    padding: 10px 18px;
-    border-radius: 20px;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-  }
-  
+.deck-list-container, .deck-details-container {
+  background: #e0e0e0;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+}
+
+/* Deck list buttons */
+.deck-list button, .deck-details button {
+  display: block;
+  margin-top: 10px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
+}
+
+/* Deck list cards */
+.deck-card {
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 10px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.green-card {
+  background-color: #90ee90;
+  color: #000;
+}
+
+.blue-card {
+  background-color: #6495ed;
+}
+
+.add-btn {
+  background: #fff;
+  border: 2px dashed #444;
+  font-weight: bold;
+}
+
+/* Modal windows */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #eee;
+  padding: 30px;
+  border-radius: 10px;
+  width: 300px;
+}
+
+.hidden {
+  display: none;
+}
+
+.close {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Study Page Layout */
+.study-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 40px;
+}
+
+.study-header {
+  text-align: center;
+}
+
+.back-button {
+  align-self: flex-start;
+  margin-bottom: -20px;
+}
+
+.back-button button {
+  background-color: #fff;
+  border: 2px solid #aaa;
+  border-radius: 16px;
+  padding: 6px 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-button button:hover {
+  background-color: #ddd;
+}
+
+/* Deck selection dropdown */
+#deckSelect {
+  margin-top: 10px;
+  padding: 8px 12px;
+}
+
+/* Flashcard area layout */
+.study-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flashcard {
+  width: 400px;
+  height: 220px;
+  background-color: #444;
+  color: white;
+  border-radius: 20px;
+  font-size: 1.3rem;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/* Difficulty buttons (1–5 scale) */
+.difficulty-bar {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: -60px;
+}
+
+.diff {
+  margin: 5px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.diff-1 { background-color: #f44336; }
+.diff-2 { background-color: #ff9800; }
+.diff-3 { background-color: #ffeb3b; color: black; }
+.diff-4 { background-color: #8bc34a; }
+.diff-5 { background-color: #4caf50; }
+
+/* Flashcard navigation controls */
+.nav-controls {
+  margin-top: 20px;
+}
+
+.nav-controls button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+}
+
+/* Hint button styling */
+.hint-btn {
+  margin-top: 20px;
+  background-color: #d0aaff;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}

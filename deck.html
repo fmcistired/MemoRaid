@@ -6,17 +6,23 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Main deck management layout -->
   <main class="deck-manager">
+
+    <!-- Back button to return to dashboard -->
     <div class="back-button">
       <button onclick="location.href='index.html'">←</button>
     </div>
+
+    <!-- Top panel: Deck List -->
     <section class="deck-list-container">
       <h2>Deck List</h2>
       <input type="text" id="searchDecks" placeholder="Search decks" />
       <div id="deckList" class="deck-list"></div>
       <button id="addDeckBtn" class="add-btn">+ Add a new deck</button>
     </section>
-
+    
+    <!-- Bottom panel: Deck Details -->
     <section class="deck-details-container">
       <h2>Deck Details</h2>
       <div id="deckDetails" class="deck-details">
@@ -25,7 +31,7 @@
     </section>
   </main>
 
-  <!-- Deck Modal -->
+  <!-- Creat Deck Modal -->
   <div id="deckModal" class="modal hidden">
     <div class="modal-content">
       <span id="closeModal" class="close">&times;</span>
@@ -36,7 +42,7 @@
     </div>
   </div>
 
-  <!-- Flashcard Modal -->
+  <!-- Create Flashcard Modal -->
   <div id="flashcardModal" class="modal hidden">
    <div class="modal-content">
      <span id="closeFlashcardModal" class="close">&times;</span>
@@ -57,8 +63,6 @@
       <button id="saveFlashcardChanges">Save Changes</button>
     </div>
   </div>
-  
-  
   
   <script type="module" src="deck.js"></script>
 </body>

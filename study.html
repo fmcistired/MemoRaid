@@ -6,45 +6,57 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <main class="study-layout">
-        <div class="back-button">
-          <button onclick="location.href='index.html'">←</button>
-        </div>
-        <div class="study-header">
-          <h2 id="deckTitle">Select a deck</h2>
-          <select id="deckSelect">
-            <option value="">-- Choose a deck --</option>
-          </select>
-        </div>
-      
-        <div class="study-body">
-          <div id="flashcard" class="flashcard">Click to flip</div>
-      
-          <div class="difficulty-bar">
-            <button data-level="1" class="diff diff-1">1</button>
-            <button data-level="2" class="diff diff-2">2</button>
-            <button data-level="3" class="diff diff-3">3</button>
-            <button data-level="4" class="diff diff-4">4</button>
-            <button data-level="5" class="diff diff-5">5</button>
-          </div>
-      
-          <div class="nav-controls">
-            <button id="prevCard">←</button>
-            <button id="flipCard">⟳</button>
-            <button id="nextCard">→</button>
-          </div>
-      
-          <button id="hintBtn" class="hint-btn">💡 Need a hint?</button>
-        </div>
-      
-        <div id="hintModal" class="modal hidden">
-          <div class="modal-content">
-            <span id="closeHintModal" class="close">&times;</span>
-            <h3>Hint</h3>
-            <p id="hintContent">"AI hint goes here..."</p>
-          </div>
-        </div>
-      </main>      
+  <!-- Main container for the study interface -->
+  <main class="study-layout">
+    <!-- Back button to return to the dashboard -->
+    <div class="back-button">
+      <button onclick="location.href='index.html'">←</button>
+    </div>
+
+    <!-- Header area showing selected deck name and dropdown to choose decks -->
+    <div class="study-header">
+      <h2 id="deckTitle">Select a deck</h2>
+      <select id="deckSelect">
+        <option value="">-- Choose a deck --</option>
+      </select>
+    </div>
+
+    <!-- Flashcard display and interaction controls -->
+    <div class="study-body">
+
+      <div id="flashcard" class="flashcard">Click to flip</div>
+      <!-- Difficulty level buttons (1-5 scale) -->
+      <div class="difficulty-bar">
+        <button data-level="1" class="diff diff-1">1</button>
+        <button data-level="2" class="diff diff-2">2</button>
+        <button data-level="3" class="diff diff-3">3</button>
+        <button data-level="4" class="diff diff-4">4</button>
+        <button data-level="5" class="diff diff-5">5</button>
+      </div>
+
+      <!-- Navigation buttons: previous card, flip, next card -->
+      <div class="nav-controls">
+        <button id="prevCard">←</button>
+        <button id="flipCard">⟳</button>
+        <button id="nextCard">→</button>
+      </div>
+
+      <!-- Button to trigger AI-powered hint modal -->
+      <button id="hintBtn" class="hint-btn">💡 Need a hint?</button>
+    </div>
+
+    <!-- Modal to display Gemini-generated AI hint -->
+    <div id="hintModal" class="modal hidden">
+      <div class="modal-content">
+        <span id="closeHintModal" class="close">&times;</span>
+        <h3>Hint</h3>
+        <p id="hintContent">"AI hint goes here..."</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Load flashcard study logic -->
   <script type="module" src="study.js"></script>
 </body>
 </html>

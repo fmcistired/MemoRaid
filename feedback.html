@@ -4,22 +4,28 @@
   <meta charset="UTF-8">
   <title>MemoRaid – Feedback</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+  
+  <!-- Main Feedback Layout -->
   <main class="study-layout">
+
+    <!-- Navigation back to dashboard -->
     <div class="back-button">
         <button onclick="location.href='index.html'">←</button>
     </div>
-    <h2>📊 Your Feedback Summary</h2>
+    <h2><i class="fa-solid fa-chart-bar"></i> Your Feedback Summary</h2>
 
+    <!-- Display Summary stats pulled from flashcard data -->
     <div class="card" id="stats-summary">
       <p><strong>Most Studied Deck:</strong> <span id="mostStudied">...</span></p>
       <p><strong>Average Difficulty:</strong> <span id="avgDifficulty">...</span></p>
       <p><strong>Weakest Deck:</strong> <span id="weakestDeck">...</span></p>
     </div>
 
-    <button id="generateFeedbackBtn">🧠 Generate AI Feedback</button>
-
+    <!-- AI generated feedback using Gemini -->
+    <button id="generateFeedbackBtn">Generate AI Feedback</button>
     <div class="card" id="aiFeedbackBox" style="display: none;">
       <h3>AI Feedback:</h3>
       <p id="aiFeedback">...</p>
